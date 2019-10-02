@@ -361,5 +361,452 @@ public (active)
   icmp-blocks: 
   rich rules: 
 ```
+🐙 nft:
 
-🐙 sous CentOS8, ce n'est plus iptables qui est utilisé pour manipuler le filtrage réseau mais nftables. Jouez un peu avec nft et affichez les "vraies" règles firewall (firewalld, manipulé avec firewall-cmd n'est qu'une surcouche à nft)
+```
+[florian@localhost ~]$ sudo nft list tables
+table ip filter
+table ip6 filter
+table bridge filter
+table ip security
+table ip raw
+table ip mangle
+table ip nat
+table ip6 security
+table ip6 raw
+table ip6 mangle
+table ip6 nat
+table bridge nat
+table inet firewalld
+table ip firewalld
+table ip6 firewalld
+```
+```
+[florian@localhost ~]$ sudo nft list table inet firewalld
+table inet firewalld {
+	chain raw_PREROUTING {
+		type filter hook prerouting priority -290; policy accept;
+		icmpv6 type { nd-router-advert, nd-neighbor-solicit } accept
+		meta nfproto ipv6 fib saddr . iif oif missing drop
+		jump raw_PREROUTING_ZONES_SOURCE
+		jump raw_PREROUTING_ZONES
+	}
+
+	chain raw_PREROUTING_ZONES_SOURCE {
+	}
+
+	chain raw_PREROUTING_ZONES {
+		iifname "enp0s8" goto raw_PRE_public
+		iifname "enp0s3" goto raw_PRE_public
+		goto raw_PRE_public
+	}
+
+	chain mangle_PREROUTING {
+		type filter hook prerouting priority -140; policy accept;
+		jump mangle_PREROUTING_ZONES_SOURCE
+		jump mangle_PREROUTING_ZONES
+	}
+
+	chain mangle_PREROUTING_ZONES_SOURCE {
+	}
+
+	chain mangle_PREROUTING_ZONES {
+		iifname "enp0s8" goto mangle_PRE_public
+		iifname "enp0s3" goto mangle_PRE_public
+		goto mangle_PRE_public
+	}
+
+	chain filter_INPUT {
+		type filter hook input priority 10; policy accept;
+		ct state established,related accept
+		iifname "lo" accept
+		jump filter_INPUT_ZONES_SOURCE
+		jump filter_INPUT_ZONES
+		ct state invalid drop
+		reject with icmpx type admin-prohibited
+	}
+
+	chain filter_FORWARD {
+		type filter hook forward priority 10; policy accept;
+		ct state established,related accept
+		iifname "lo" accept
+		ip6 daddr { ::/96, ::ffff:0.0.0.0/96, 2002::/24, 2002:a00::/24, 2002:7f00::/24, 2002:a9fe::/32, 2002:ac10::/28, 2002:c0a8::/32, 2002:e000::/19 } reject with icmpv6 type addr-unreachable
+		jump filter_FORWARD_IN_ZONES_SOURCE
+		jump filter_FORWARD_IN_ZONES
+		jump filter_FORWARD_OUT_ZONES_SOURCE
+		jump filter_FORWARD_OUT_ZONES
+		ct state invalid drop
+		reject with icmpx type admin-prohibited
+	}
+
+	chain filter_OUTPUT {
+		type filter hook output priority 10; policy accept;
+		oifname "lo" accept
+		ip6 daddr { ::/96, ::ffff:0.0.0.0/96, 2002::/24, 2002:a00::/24, 2002:7f00::/24, 2002:a9fe::/32, 2002:ac10::/28, 2002:c0a8::/32, 2002:e000::/19 } reject with icmpv6 type addr-unreachable
+	}
+
+	chain filter_INPUT_ZONES_SOURCE {
+	}
+
+	chain filter_INPUT_ZONES {
+		iifname "enp0s8" goto filter_IN_public
+		iifname "enp0s3" goto filter_IN_public
+		goto filter_IN_public
+	}
+
+	chain filter_FORWARD_IN_ZONES_SOURCE {
+	}
+
+	chain filter_FORWARD_IN_ZONES {
+		iifname "enp0s8" goto filter_FWDI_public
+		iifname "enp0s3" goto filter_FWDI_public
+		goto filter_FWDI_public
+	}
+
+	chain filter_FORWARD_OUT_ZONES_SOURCE {
+	}
+
+	chain filter_FORWARD_OUT_ZONES {
+		oifname "enp0s8" goto filter_FWDO_public
+		oifname "enp0s3" goto filter_FWDO_public
+		goto filter_FWDO_public
+	}
+
+	chain raw_PRE_public {
+		jump raw_PRE_public_pre
+		jump raw_PRE_public_log
+		jump raw_PRE_public_deny
+		jump raw_PRE_public_allow
+		jump raw_PRE_public_post
+	}
+
+	chain raw_PRE_public_pre {
+	}
+
+	chain raw_PRE_public_log {
+	}
+
+	chain raw_PRE_public_deny {
+	}
+
+	chain raw_PRE_public_allow {
+	}
+
+	chain raw_PRE_public_post {
+	}
+
+	chain filter_IN_public {
+		jump filter_IN_public_pre
+		jump filter_IN_public_log
+		jump filter_IN_public_deny
+		jump filter_IN_public_allow
+		jump filter_IN_public_post
+		meta l4proto { icmp, ipv6-icmp } accept
+	}
+
+	chain filter_IN_public_pre {
+	}
+
+	chain filter_IN_public_log {
+	}
+
+	chain filter_IN_public_deny {
+	}
+
+	chain filter_IN_public_allow {
+		tcp dport ssh ct state new,untracked accept
+		ip6 daddr fe80::/64 udp dport dhcpv6-client ct state new,untracked accept
+		tcp dport 9090 ct state new,untracked accept
+	}
+
+	chain filter_IN_public_post {
+	}
+
+	chain filter_FWDI_public {
+		jump filter_FWDI_public_pre
+		jump filter_FWDI_public_log
+		jump filter_FWDI_public_deny
+		jump filter_FWDI_public_allow
+		jump filter_FWDI_public_post
+		meta l4proto { icmp, ipv6-icmp } accept
+	}
+
+	chain filter_FWDI_public_pre {
+	}
+
+	chain filter_FWDI_public_log {
+	}
+
+	chain filter_FWDI_public_deny {
+	}
+
+	chain filter_FWDI_public_allow {
+	}
+
+	chain filter_FWDI_public_post {
+	}
+
+	chain mangle_PRE_public {
+		jump mangle_PRE_public_pre
+		jump mangle_PRE_public_log
+		jump mangle_PRE_public_deny
+		jump mangle_PRE_public_allow
+		jump mangle_PRE_public_post
+	}
+
+	chain mangle_PRE_public_pre {
+	}
+
+	chain mangle_PRE_public_log {
+	}
+
+	chain mangle_PRE_public_deny {
+	}
+
+	chain mangle_PRE_public_allow {
+	}
+
+	chain mangle_PRE_public_post {
+	}
+
+	chain filter_FWDO_public {
+		jump filter_FWDO_public_pre
+		jump filter_FWDO_public_log
+		jump filter_FWDO_public_deny
+		jump filter_FWDO_public_allow
+		jump filter_FWDO_public_post
+	}
+
+	chain filter_FWDO_public_pre {
+	}
+
+	chain filter_FWDO_public_log {
+	}
+
+	chain filter_FWDO_public_deny {
+	}
+
+	chain filter_FWDO_public_allow {
+	}
+
+	chain filter_FWDO_public_post {
+	}
+}
+```
+
+## II. Edit configuration
+### 1. Configuration cartes réseau
+
+Modification de la configuration de la carte réseau privée pour avoir une nouvelle IP statique définie par vos soins:
+
+```
+[florian@localhost network-scripts]$ cat ./ifcfg-enp0s8
+TYPE="Ethernet"
+BOOTPROTO="static"
+
+NAME="enp0s8"
+DEVICE="enp0s8"
+ONBOOT="yes"
+
+IPADDR="192.168.57.3"
+MASK="255.255.255.0"
+```
+```
+[florian@localhost network-scripts]$ ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:52:03:ef brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic noprefixroute enp0s3
+       valid_lft 84628sec preferred_lft 84628sec
+    inet6 fe80::fd43:f340:e369:ff69/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:c9:40:c1 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.57.3/24 brd 192.168.57.255 scope global noprefixroute enp0s8
+       valid_lft forever preferred_lft forever
+```
+
+
+Ajouter une nouvelle carte réseau dans un DEUXIEME réseau privé
+```
+[florian@localhost network-scripts]$ cat ./ifcfg-enp0s9
+TYPE="Ethernet"
+BOOTPROTO="static"
+
+NAME="enp0s9"
+DEVICE="enp0s9"
+ONBOOT="yes"
+
+IPADDR="192.168.57.4"
+MASK="255.255.255.0"
+```
+```
+[florian@localhost network-scripts]$ ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:52:03:ef brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic noprefixroute enp0s3
+       valid_lft 84466sec preferred_lft 84466sec
+    inet6 fe80::fd43:f340:e369:ff69/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:c9:40:c1 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.57.3/24 brd 192.168.57.255 scope global noprefixroute enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fec9:40c1/64 scope link 
+       valid_lft forever preferred_lft forever
+4: enp0s9: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:69:a1:fd brd ff:ff:ff:ff:ff:ff
+    inet 192.168.57.4/24 brd 192.168.57.255 scope global noprefixroute enp0s9
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe69:a1fd/64 scope link 
+       valid_lft forever preferred_lft forever
+```
+```
+[florian@localhost network-scripts]$ ip route
+default via 10.0.2.2 dev enp0s3 proto dhcp metric 100 
+10.0.2.0/24 dev enp0s3 proto kernel scope link src 10.0.2.15 metric 100 
+192.168.57.0/24 dev enp0s8 proto kernel scope link src 192.168.57.3 metric 101 
+192.168.57.0/24 dev enp0s9 proto kernel scope link src 192.168.57.4 metric 102
+```
+```
+[florian@localhost network-scripts]$ sudo ip n s
+10.0.2.3 dev enp0s3 lladdr 52:54:00:12:35:03 STALE
+10.0.2.2 dev enp0s3 lladdr 52:54:00:12:35:02 REACHABLE
+192.168.57.1 dev enp0s9 lladdr 0a:00:27:00:00:02 REACHABLE
+192.168.57.1 dev enp0s8 lladdr 0a:00:27:00:00:01 REACHABLE
+```
+
+🐙 mettre en place un NIC teaming (ou bonding):
+
+Jé pa réusi :cry: 
+
+### 2. Serveur SSH
+
+Modification la configuration du système pour que le serveur SSH tourne sur le port 2222:
+
+```
+[florian@localhost ~]$ ss -tnlp
+State      Recv-Q      Send-Q            Local Address:Port           Peer Address:Port      
+LISTEN     0           128                     0.0.0.0:2222                0.0.0.0:*         
+LISTEN     0           128                        [::]:2222                   [::]:* 
+```
+
+```
+[florian@localhost ~]$ sudo !!
+sudo firewall-cmd --list-all
+[sudo] password for florian: 
+public (active)
+  target: default
+  icmp-block-inversion: no
+  interfaces: bond0 enp0s3 enp0s8 enp0s9
+  sources: 
+  services: cockpit dhcpv6-client ssh
+  ports: 2222/tcp
+  protocols: 
+  masquerade: no
+  forward-ports: 
+  source-ports: 
+  icmp-blocks: 
+  rich rules: 
+```
+
+
+Analyse des trames de connexion au serveur SSH:
+(j'ai cassé mon VirtualBox en installant Vagrant (qui ne marche pas non plus)... :cry: :scream:)
+
+```
+sudo tcpdump -i enp0s8
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on enp0s8, link-type EN10MB (Ethernet), capture size 262144 bytes
+16:37:03.103407 ARP, Request who-has localhost.localdomain tell 192.168.56.104, length 46 
+16:37:03.103421 ARP, Reply localhost.localdomain is-at 08:00:27:6f:54:c9 (oui Unknown), length 28
+16:37:03.103612 IP 192.168.56.104.50800 > localhost.localdomain.ssh: Flags [S], seq 3590438451, win 29200, options [mss 1460,sackOK,TS val 2376396728 ecr 0,nop,wscale 7], length 0
+16:37:03.103643 IP localhost.localdomain.ssh > 192.168.56.104.50800: Flags [R.], seq 0, ack 3590438452, win 0, length 0
+16:37:08.550845 ARP, Request who-has 192.168.56.104 tell localhost.localdomain, length 28
+16:37:08.551000 ARP, Reply 192.168.56.104 is-at 08:00:27:a3:c2:75 (oui Unknown), length 46
+```
+On voit quatre ligne ARP. 
+La première et la seconde ce sont des demandes.
+La deuxième et la quatrième ce sont des réponses.
+
+## III. Routage Simple
+
+                   +-------+
+                   |Outside|
+                   | world |
+                   +---+---+
+                       |
+                       |
++-------+         +----+---+         +-------+
+|       |   net1  |        |   net2  |       |
+|  VM1  +---------+ Router +---------+  VM2  |
+|       |         |        |         |       |
++-------+         +--------+         +-------+
+
+
+(Mon virtualBox toujours Cassé on va faire sans !)
+
+### Conf:
+
+VM1: Carte1 = ip 192.168.1.1 | mask 255.255.255.252
+VM2: Carte1 = ip 192.168.2.1 | mask 255.255.255.252
+
+Routeur: Carte1 = ip 192.168.1.2 | mask 255.255.255.252 | Co VM1
+         Carte2 = ip 192.168.2.2 | mask 255.255.255.252 | Co VM2
+         Carte3 = ip 192.168.3.2 | mask 255.255.255.0   | Co Host pour internet
+         
+Ensuite on add les routes:
+
+Fichier à modif:
+``` vim /etc/sysconfig/network-scripts/route-eth0 ```
+
+pour VM1:
+``` 192.168.3.0/24 via 192.168.1.2 dev eth0 ```
+
+pour VM2:
+``` 192.168.3.0/24 via 192.168.2.2 dev eth0 ```
+
+### Traceroute:
+
+Commande:
+
+```
+traceroute 8.8.8.8
+```
+
+Theoriquement la on à quelque chose comme ça:
+(mais avec nos IP au début, la notre, celle du routeur, celle de mon host)
+
+```
+traceroute to google.com (74.125.236.132), 30 hops max, 60 byte packets
+1  220.224.141.129 (220.224.141.129)  89.174 ms  89.094 ms  89.054 ms
+2  115.255.239.65 (115.255.239.65)  109.037 ms  108.994 ms  108.963 ms
+3  124.124.251.245 (124.124.251.245)  108.937 ms  121.322 ms  121.300 ms
+4  * 115.255.239.45 (115.255.239.45)  113.754 ms  113.692 ms
+5  72.14.212.118 (72.14.212.118)  123.585 ms  123.558 ms  123.527 ms
+6  72.14.232.202 (72.14.232.202)  123.499 ms  123.475 ms  143.523 ms
+7  216.239.48.179 (216.239.48.179)  143.503 ms  95.106 ms  95.026 ms
+8  bom03s02-in-f4.1e100.net (74.125.236.132)  94.980 ms  104.989 ms  104.954 m
+```
+
+## Métrologie:
+
+(vm vroken :-1:)
+
+Bon du coup j'ai matter un peu Cockpit sur la toile.
+
+C'est un service web qui permet de faire du monitoring sur ou des serveurs.
+On peut voir l'espace du disque, l'utilisation du réseau, la consomation CPU de chaque services ect ...
+
+De base Cockpit écoute sur le port '9090'.
