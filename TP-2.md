@@ -93,7 +93,17 @@ Par ce que la commande <code>ping</code> utilise le protocole ICMP qui lui utili
 <li>🌞 faire communiquer les trois PC</li>
 </ul>
 <p>PC1 vers PC2:</p>
-<pre><code>
+<pre><code>No.     Time           Source                Destination           Protocol Length Info
+     14 14.872121      Private_66:68:02      Broadcast             ARP      64     Who has 10.2.2.2? Tell 10.2.2.1
+     15 14.876550      Private_66:68:03      Private_66:68:02      ARP      64     10.2.2.2 is at 00:50:79:66:68:03
+     16 14.876724      Private_66:68:03      Private_66:68:02      ARP      64     10.2.2.2 is at 00:50:79:66:68:03
+     17 14.876877      Private_66:68:03      Private_66:68:02      ARP      64     10.2.2.2 is at 00:50:79:66:68:03
+     18 14.877028      Private_66:68:03      Private_66:68:02      ARP      64     10.2.2.2 is at 00:50:79:66:68:03
+     19 14.878046      10.2.2.1              10.2.2.2              ICMP     98     Echo (ping) request  id=0x361c, seq=1/256, ttl=64 (reply in 20)
+     20 14.878515      10.2.2.2              10.2.2.1              ICMP     98     Echo (ping) reply    id=0x361c, seq=1/256, ttl=64 (request in 19)
+     21 15.879190      10.2.2.1              10.2.2.2              ICMP     98     Echo (ping) request  id=0x371c, seq=2/512, ttl=64 (reply in 22)
+     22 15.879469      10.2.2.2              10.2.2.1              ICMP     98     Echo (ping) reply    id=0x371c, seq=2/512, ttl=64 (request in 21)
+
 </code></pre>
 <p>PC1 vers PC3:</p>
 <pre><code>
