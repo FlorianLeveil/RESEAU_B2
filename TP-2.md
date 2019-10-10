@@ -106,7 +106,23 @@ Par ce que la commande <code>ping</code> utilise le protocole ICMP qui lui utili
 
 </code></pre>
 <p>PC1 vers PC3:</p>
-<pre><code>
+<pre><code>No.     Time           Source                Destination           Protocol Length Info
+     28 20.548025      Private_66:68:02      Broadcast             ARP      64     Who has 10.2.2.3? Tell 10.2.2.1
+     29 20.551440      Private_66:68:04      Private_66:68:02      ARP      64     10.2.2.3 is at 00:50:79:66:68:04
+     30 20.552067      Private_66:68:04      Private_66:68:02      ARP      64     10.2.2.3 is at 00:50:79:66:68:04
+     31 20.552201      Private_66:68:04      Private_66:68:02      ARP      64     10.2.2.3 is at 00:50:79:66:68:04
+     32 20.553272      Private_66:68:04      Private_66:68:02      ARP      64     10.2.2.3 is at 00:50:79:66:68:04
+     33 20.553381      Private_66:68:04      Private_66:68:02      ARP      64     10.2.2.3 is at 00:50:79:66:68:04
+     34 20.553486      Private_66:68:04      Private_66:68:02      ARP      64     10.2.2.3 is at 00:50:79:66:68:04
+     35 20.553606      Private_66:68:04      Private_66:68:02      ARP      64     10.2.2.3 is at 00:50:79:66:68:04
+     36 20.553983      Private_66:68:04      Private_66:68:02      ARP      64     10.2.2.3 is at 00:50:79:66:68:04
+     37 20.554422      10.2.2.1              10.2.2.3              ICMP     98     Echo (ping) request  id=0x3c1c, seq=1/256, ttl=64 (reply in 38)
+     38 20.554660      10.2.2.3              10.2.2.1              ICMP     98     Echo (ping) reply    id=0x3c1c, seq=1/256, ttl=64 (request in 37)
+     39 21.555589      10.2.2.1              10.2.2.3              ICMP     98     Echo (ping) request  id=0x3d1c, seq=2/512, ttl=64 (reply in 40)
+     40 21.556344      10.2.2.3              10.2.2.1              ICMP     98     Echo (ping) reply    id=0x3d1c, seq=2/512, ttl=64 (request in 39)
+     41 22.091327      aa:bb:cc:00:04:00     Spanning-tree-(for-bridges)_00 STP      60     RST. Root = 32768/1/aa:bb:cc:00:02:00  Cost = 100  Port = 0x8001
+     42 22.556911      10.2.2.1              10.2.2.3              ICMP     98     Echo (ping) request  id=0x3e1c, seq=3/768, ttl=64 (reply in 43)
+     43 22.557590      10.2.2.3              10.2.2.1              ICMP     98     Echo (ping) reply    id=0x3e1c, seq=3/768, ttl=64 (request in 42)
 </code></pre>
 <p>PC2 vers PC3:</p>
 <pre><code>
