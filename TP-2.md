@@ -90,8 +90,8 @@ Par ce que la commande <code>ping</code> utilise le protocole ICMP qui lui utili
 <h4 id="todo">ToDo</h4>
 <ul>
 <li>🌞 mettre en place la topologie ci-dessus</li>
-<li>🌞 faire communiquer les trois PC</li>
 </ul>
+<h3 id="🌞-faire-communiquer-les-trois-pc">🌞 faire communiquer les trois PC:</h3>
 <p>PC1 vers PC2:</p>
 <pre><code>No.     Time           Source                Destination           Protocol Length Info
      14 14.872121      Private_66:68:02      Broadcast             ARP      64     Who has 10.2.2.2? Tell 10.2.2.1
@@ -124,11 +124,34 @@ Par ce que la commande <code>ping</code> utilise le protocole ICMP qui lui utili
      42 22.556911      10.2.2.1              10.2.2.3              ICMP     98     Echo (ping) request  id=0x3e1c, seq=3/768, ttl=64 (reply in 43)
      43 22.557590      10.2.2.3              10.2.2.1              ICMP     98     Echo (ping) reply    id=0x3e1c, seq=3/768, ttl=64 (request in 42)
 </code></pre>
-<p>PC2 vers PC3:</p>
-<pre><code>
-</code></pre>
 <p>PC2 vers PC1:</p>
-<pre><code>
+<pre><code>No.     Time           Source                Destination           Protocol Length Info
+     15 17.644305      Private_66:68:03      Broadcast             ARP      64     Who has 10.2.2.1? Tell 10.2.2.2
+     16 17.648409      Private_66:68:02      Private_66:68:03      ARP      64     10.2.2.1 is at 00:50:79:66:68:02
+     17 17.648600      Private_66:68:02      Private_66:68:03      ARP      64     10.2.2.1 is at 00:50:79:66:68:02
+     18 17.648766      Private_66:68:02      Private_66:68:03      ARP      64     10.2.2.1 is at 00:50:79:66:68:02
+     19 17.648929      Private_66:68:02      Private_66:68:03      ARP      64     10.2.2.1 is at 00:50:79:66:68:02
+     20 17.650207      10.2.2.2              10.2.2.1              ICMP     98     Echo (ping) request  id=0x7525, seq=1/256, ttl=64 (reply in 21)
+     21 17.650958      10.2.2.1              10.2.2.2              ICMP     98     Echo (ping) reply    id=0x7525, seq=1/256, ttl=64 (request in 20)
+     22 18.063916      aa:bb:cc:00:02:00     Spanning-tree-(for-bridges)_00 STP      60     RST. Root = 32768/1/aa:bb:cc:00:02:00  Cost = 0  Port = 0x8001
+     23 18.652338      10.2.2.2              10.2.2.1              ICMP     98     Echo (ping) request  id=0x7625, seq=2/512, ttl=64 (reply in 24)
+     24 18.652980      10.2.2.1              10.2.2.2              ICMP     98     Echo (ping) reply    id=0x7625, seq=2/512, ttl=64 (request in 23)
+
+</code></pre>
+<p>PC2 vers PC3:</p>
+<pre><code>No.     Time           Source                Destination           Protocol Length Info
+     27 22.512248      Private_66:68:03      Broadcast             ARP      64     Who has 10.2.2.3? Tell 10.2.2.2
+     28 22.515344      Private_66:68:04      Private_66:68:03      ARP      64     10.2.2.3 is at 00:50:79:66:68:04
+     29 22.515506      Private_66:68:04      Private_66:68:03      ARP      64     10.2.2.3 is at 00:50:79:66:68:04
+     30 22.515649      Private_66:68:04      Private_66:68:03      ARP      64     10.2.2.3 is at 00:50:79:66:68:04
+     31 22.515783      Private_66:68:04      Private_66:68:03      ARP      64     10.2.2.3 is at 00:50:79:66:68:04
+     32 22.516675      10.2.2.2              10.2.2.3              ICMP     98     Echo (ping) request  id=0x7a25, seq=1/256, ttl=64 (reply in 33)
+     33 22.517076      10.2.2.3              10.2.2.2              ICMP     98     Echo (ping) reply    id=0x7a25, seq=1/256, ttl=64 (request in 32)
+     34 23.517856      10.2.2.2              10.2.2.3              ICMP     98     Echo (ping) request  id=0x7b25, seq=2/512, ttl=64 (reply in 35)
+     35 23.518441      10.2.2.3              10.2.2.2              ICMP     98     Echo (ping) reply    id=0x7b25, seq=2/512, ttl=64 (request in 34)
+     36 24.092240      aa:bb:cc:00:02:00     Spanning-tree-(for-bridges)_00 STP      60     RST. Root = 32768/1/aa:bb:cc:00:02:00  Cost = 0  Port = 0x8001
+     37 24.519912      10.2.2.2              10.2.2.3              ICMP     98     Echo (ping) request  id=0x7c25, seq=3/768, ttl=64 (reply in 38)
+
 </code></pre>
 <p>PC3 vers PC1:</p>
 <pre><code>
