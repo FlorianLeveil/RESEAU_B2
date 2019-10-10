@@ -154,10 +154,38 @@ Par ce que la commande <code>ping</code> utilise le protocole ICMP qui lui utili
 
 </code></pre>
 <p>PC3 vers PC1:</p>
-<pre><code>
+<pre><code>No.     Time           Source                Destination           Protocol Length Info
+      9 5.606954       Private_66:68:04      Broadcast             ARP      64     Who has 10.2.2.1? Tell 10.2.2.3
+     10 5.611006       Private_66:68:02      Private_66:68:04      ARP      64     10.2.2.1 is at 00:50:79:66:68:02
+     11 5.611230       Private_66:68:02      Private_66:68:04      ARP      64     10.2.2.1 is at 00:50:79:66:68:02
+     12 5.611431       Private_66:68:02      Private_66:68:04      ARP      64     10.2.2.1 is at 00:50:79:66:68:02
+     13 5.611662       Private_66:68:02      Private_66:68:04      ARP      64     10.2.2.1 is at 00:50:79:66:68:02
+     14 5.611877       Private_66:68:02      Private_66:68:04      ARP      64     10.2.2.1 is at 00:50:79:66:68:02
+     15 5.612108       Private_66:68:02      Private_66:68:04      ARP      64     10.2.2.1 is at 00:50:79:66:68:02
+     16 5.612314       Private_66:68:02      Private_66:68:04      ARP      64     10.2.2.1 is at 00:50:79:66:68:02
+     17 5.612519       Private_66:68:02      Private_66:68:04      ARP      64     10.2.2.1 is at 00:50:79:66:68:02
+     18 5.613163       10.2.2.3              10.2.2.1              ICMP     98     Echo (ping) request  id=0xa226, seq=1/256, ttl=64 (reply in 19)
+     19 5.613645       10.2.2.1              10.2.2.3              ICMP     98     Echo (ping) reply    id=0xa226, seq=1/256, ttl=64 (request in 18)
+     20 6.012662       aa:bb:cc:00:03:00     Spanning-tree-(for-bridges)_00 STP      60     RST. Root = 32768/1/aa:bb:cc:00:02:00  Cost = 100  Port = 0x8001
+     21 6.614360       10.2.2.3              10.2.2.1              ICMP     98     Echo (ping) request  id=0xa326, seq=2/512, ttl=64 (reply in 22)
+     22 6.614763       10.2.2.1              10.2.2.3              ICMP     98     Echo (ping) reply    id=0xa326, seq=2/512, ttl=64 (request in 21)
+     23 7.615576       10.2.2.3              10.2.2.1              ICMP     98     Echo (ping) request  id=0xa426, seq=3/768, ttl=64 (reply in 24)
+     24 7.616386       10.2.2.1              10.2.2.3              ICMP     98     Echo (ping) reply    id=0xa426, seq=3/768, ttl=64 (request in 23)
 </code></pre>
 <p>PC3 vers PC2:</p>
-<pre><code>
+<pre><code>No.     Time           Source                Destination           Protocol Length Info
+     27 10.278943      Private_66:68:04      Broadcast             ARP      64     Who has 10.2.2.2? Tell 10.2.2.3
+     28 10.283187      Private_66:68:03      Private_66:68:04      ARP      64     10.2.2.2 is at 00:50:79:66:68:03
+     29 10.283402      Private_66:68:03      Private_66:68:04      ARP      64     10.2.2.2 is at 00:50:79:66:68:03
+     30 10.283686      10.2.2.3              10.2.2.2              ICMP     98     Echo (ping) request  id=0xa726, seq=1/256, ttl=64 (reply in 33)
+     31 10.283827      Private_66:68:03      Private_66:68:04      ARP      64     10.2.2.2 is at 00:50:79:66:68:03
+     32 10.283940      Private_66:68:03      Private_66:68:04      ARP      64     10.2.2.2 is at 00:50:79:66:68:03
+     33 10.284175      10.2.2.2              10.2.2.3              ICMP     98     Echo (ping) reply    id=0xa726, seq=1/256, ttl=64 (request in 30)
+     34 11.284917      10.2.2.3              10.2.2.2              ICMP     98     Echo (ping) request  id=0xa826, seq=2/512, ttl=64 (reply in 35)
+     35 11.285672      10.2.2.2              10.2.2.3              ICMP     98     Echo (ping) reply    id=0xa826, seq=2/512, ttl=64 (request in 34)
+     36 12.028748      aa:bb:cc:00:03:00     Spanning-tree-(for-bridges)_00 STP      60     RST. Root = 32768/1/aa:bb:cc:00:02:00  Cost = 100  Port = 0x8001
+     37 12.286134      10.2.2.3              10.2.2.2              ICMP     98     Echo (ping) request  id=0xa926, seq=3/768, ttl=64 (reply in 38)
+     38 12.286925      10.2.2.2              10.2.2.3              ICMP     98     Echo (ping) reply    id=0xa926, seq=3/768, ttl=64 (request in 37)
 </code></pre>
 <ul>
 <li>avec des <code>ping</code> qui fonctionnent</li>
