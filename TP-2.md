@@ -4,7 +4,9 @@
 ---
 
 <h1 id="i.-simplest-setup">I. Simplest setup</h1>
-<p>Ci dessous nous pouvons constater les échanges ARP:</p>
+<h4 id="topologie">TOPOLOGIE</h4>
+<p><img src="https://github.com/FlorianLeveil/RESEAU_B2/blob/master/Images/topo1.png" alt=""><br>
+Ci dessous nous pouvons constater les échanges ARP:</p>
 <pre><code>No.     Time           Source                Destination           Protocol Length Info
     299 503.953067     Private_66:68:00      Broadcast             ARP      64     Who has 10.2.1.2? Tell 10.2.1.1
 
@@ -72,7 +74,7 @@ Par ce que la commande <code>ping</code> utilise le protocole ICMP qui lui utili
 </li>
 </ul>
 <h1 id="ii.-more-switches">II. More switches</h1>
-<h4 id="topologie">Topologie</h4>
+<h4 id="topologie-1">Topologie</h4>
 <pre><code>                        +-----+
                         | PC2 |
                         +--+--+
@@ -88,9 +90,7 @@ Par ce que la commande <code>ping</code> utilise le protocole ICMP qui lui utili
 +-----+        +-------+        +-------+        +-----+
 </code></pre>
 <h4 id="todo">ToDo</h4>
-<ul>
-<li>🌞 mettre en place la topologie ci-dessus</li>
-</ul>
+<p><img src="https://github.com/FlorianLeveil/RESEAU_B2/blob/master/Images/topo2.png" alt=""></p>
 <h3 id="🌞-faire-communiquer-les-trois-pc">🌞 faire communiquer les trois PC:</h3>
 <p>PC1 vers PC2:</p>
 <pre><code>No.     Time           Source                Destination           Protocol Length Info
@@ -189,38 +189,213 @@ Par ce que la commande <code>ping</code> utilise le protocole ICMP qui lui utili
 </code></pre>
 <ul>
 <li>avec des <code>ping</code> qui fonctionnent</li>
-<li>🌞 analyser la table MAC d’un switch
-<ul>
-<li><code>show mac address-table</code></li>
-<li>comprendre/expliquer chaque ligne</li>
 </ul>
-</li>
-<li>🐙 en lançant Wireshark sur les liens des switches, il y a des trames CDP qui circulent. Quoi qu’est-ce ?</li>
-</ul>
-<h4 id="mise-en-évidence-du-spanning-tree-protocol"><a href="#mise-en-%C3%A9vidence-du-spanning-tree-protocol"></a>Mise en évidence du <a href="/it4lik/b2-reseau-2019/blob/master/memo/lexique.md#stp-spanning-tree-protocol">Spanning Tree Protocol</a></h4>
-<p><a href="/it4lik/b2-reseau-2019/blob/master/memo/lexique.md#stp-spanning-tree-protocol">STP</a> a été ici automatiquement configuré par les switches eux-mêmes pour éviter une boucle réseau.</p>
-<p>Dans une configuration pareille, les switches ont élu un chemin de préférence.<br>
-Si on considère les trois liens qui unissent les switches :</p>
+<h3 id="🌞-analyser-la-table-mac-dun-switch">🌞 Analyser la table MAC d’un switch</h3>
 <ul>
-<li><code>SW1</code> &lt;&gt; <code>SW2</code></li>
-<li><code>SW2</code> &lt;&gt; <code>SW3</code></li>
-<li><code>SW1</code> &lt;&gt; <code>SW3</code></li>
+<li>SWITCH 1:</li>
 </ul>
-<p><strong>L’un de ces liens a forcément été désactivé.</strong></p>
-<p>On va regarder comment <a href="/it4lik/b2-reseau-2019/blob/master/memo/lexique.md#stp-spanning-tree-protocol">STP</a> a été configuré.</p>
+<pre><code>IOU-1#show mac address-table
+          Mac Address Table
+-------------------------------------------
+
+Vlan    Mac Address       Type        Ports
+----    -----------       --------    -----
+   1    0050.7966.6802    DYNAMIC     Et0/0
+   1    0050.7966.6803    DYNAMIC     Et0/1
+   1    0050.7966.6804    DYNAMIC     Et0/1
+   1    aabb.cc00.0210    DYNAMIC     Et0/1
+   1    aabb.cc00.0330    DYNAMIC     Et0/1
+   1    aabb.cc00.0420    DYNAMIC     Et0/1
+Total Mac Addresses for this criterion: 6
+</code></pre>
 <ul>
-<li>🌞 déterminer les informations STP
-<ul>
-<li>à l’aide des <a href="/it4lik/b2-reseau-2019/blob/master/memo/cli-cisco.md#stp">commandes dédiées au protocole</a></li>
-<li>qui est le <a href="/it4lik/b2-reseau-2019/blob/master/cours/1.md#overview-of-stp-behaviour"><em>root bridge</em></a>, quels sont les ports désactivés, etc.</li>
+<li>SWITCH 2:</li>
 </ul>
-</li>
-<li>🌞 faire un schéma en représentant les informations STP
+<pre><code>IOU-2#show mac address-table
+          Mac Address Table
+-------------------------------------------
+
+Vlan    Mac Address       Type        Ports
+----    -----------       --------    -----
+   1    0050.7966.6802    DYNAMIC     Et0/1
+   1    0050.7966.6803    DYNAMIC     Et0/0
+   1    0050.7966.6804    DYNAMIC     Et0/3
+   1    aabb.cc00.0330    DYNAMIC     Et0/3
+   1    aabb.cc00.0410    DYNAMIC     Et0/1
+   1    aabb.cc00.0420    DYNAMIC     Et0/3
+Total Mac Addresses for this criterion: 6
+</code></pre>
 <ul>
-<li>rôle des switches (qui est le root bridge)</li>
-<li>rôle de chacun des ports</li>
+<li>SWITCH 3:</li>
 </ul>
-</li>
+<pre><code>IOU-3#show mac address-table
+          Mac Address Table
+-------------------------------------------
+
+Vlan    Mac Address       Type        Ports
+----    -----------       --------    -----
+   1    0050.7966.6802    DYNAMIC     Et0/3
+   1    0050.7966.6803    DYNAMIC     Et0/3
+   1    0050.7966.6804    DYNAMIC     Et0/0
+   1    aabb.cc00.0230    DYNAMIC     Et0/3
+   1    aabb.cc00.0410    DYNAMIC     Et0/3
+   1    aabb.cc00.0420    DYNAMIC     Et0/2
+Total Mac Addresses for this criterion: 6
+</code></pre>
+<ul>
+<li>comprendre/expliquer chaque ligne:</li>
+</ul>
+<p>Vlan: Le numéro du Vlan dans lequel est situé l’appareil.<br>
+Mac Address: L’adresse mac de l’appareil<br>
+Type: En fonction de comment les machines sont configuré. Elles peuvent être dynamic ou static.<br>
+Ports: Ce sont les ports sur lesquels les machines sont branchées.</p>
+<h3 id="le-stp-sil-te-plaît--on-rigole-bien.">Le STP (S’il te plaît ) <em>on rigole bien.</em></h3>
+<ul>
+<li>🌞 déterminer les informations STP</li>
+</ul>
+<ul>
+<li>SWITCH 1</li>
+</ul>
+<pre><code>IOU-1#show spanning-tree 
+
+VLAN0001
+  Spanning tree enabled protocol rstp
+  Root ID    Priority    32769
+             Address     aabb.cc00.0200
+             Cost        100
+             Port        2 (Ethernet0/1)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32769  (priority 32768 sys-id-ext 1)
+             Address     aabb.cc00.0400
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et0/0               Desg FWD 100       128.1    Shr 
+Et0/1               Root FWD 100       128.2    Shr 
+Et0/2               Altn BLK 100       128.3    Shr 
+Et0/3               Desg FWD 100       128.4    Shr 
+Et1/0               Desg FWD 100       128.5    Shr 
+Et1/1               Desg FWD 100       128.6    Shr 
+Et1/2               Desg FWD 100       128.7    Shr 
+Et1/3               Desg FWD 100       128.8    Shr 
+Et2/0               Desg FWD 100       128.9    Shr 
+Et2/1               Desg FWD 100       128.10   Shr 
+Et2/2               Desg FWD 100       128.11   Shr 
+Et2/3               Desg FWD 100       128.12   Shr 
+Et3/0               Desg FWD 100       128.13   Shr 
+Et3/1               Desg FWD 100       128.14   Shr 
+Et3/2               Desg FWD 100       128.15   Shr 
+Et3/3               Desg FWD 100       128.16   Shr 
+</code></pre>
+<ul>
+<li>SWITCH 2</li>
+</ul>
+<pre><code>IOU-2#show spanning-tree 
+
+VLAN0001
+  Spanning tree enabled protocol rstp
+  Root ID    Priority    32769
+             Address     aabb.cc00.0200
+             This bridge is the root
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32769  (priority 32768 sys-id-ext 1)
+             Address     aabb.cc00.0200
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et0/0               Desg FWD 100       128.1    Shr 
+Et0/1               Desg FWD 100       128.2    Shr 
+Et0/2               Desg FWD 100       128.3    Shr 
+Et0/3               Desg FWD 100       128.4    Shr 
+Et1/0               Desg FWD 100       128.5    Shr 
+Et1/1               Desg FWD 100       128.6    Shr 
+Et1/2               Desg FWD 100       128.7    Shr 
+Et1/3               Desg FWD 100       128.8    Shr 
+Et2/0               Desg FWD 100       128.9    Shr 
+Et2/1               Desg FWD 100       128.10   Shr 
+Et2/2               Desg FWD 100       128.11   Shr 
+Et2/3               Desg FWD 100       128.12   Shr 
+Et3/0               Desg FWD 100       128.13   Shr 
+Et3/1               Desg FWD 100       128.14   Shr 
+Et3/2               Desg FWD 100       128.15   Shr 
+Et3/3               Desg FWD 100       128.16   Shr 
+</code></pre>
+<ul>
+<li>SWITCH 3</li>
+</ul>
+<pre><code>IOU-3#show spanning-tree 
+
+VLAN0001
+  Spanning tree enabled protocol rstp
+  Root ID    Priority    32769
+             Address     aabb.cc00.0200
+             Cost        100
+             Port        4 (Ethernet0/3)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32769  (priority 32768 sys-id-ext 1)
+             Address     aabb.cc00.0300
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et0/0               Desg FWD 100       128.1    Shr 
+Et0/1               Desg FWD 100       128.2    Shr 
+Et0/2               Desg FWD 100       128.3    Shr 
+Et0/3               Root FWD 100       128.4    Shr 
+Et1/0               Desg FWD 100       128.5    Shr 
+Et1/1               Desg FWD 100       128.6    Shr 
+Et1/2               Desg FWD 100       128.7    Shr 
+Et1/3               Desg FWD 100       128.8    Shr 
+Et2/0               Desg FWD 100       128.9    Shr 
+Et2/1               Desg FWD 100       128.10   Shr 
+Et2/2               Desg FWD 100       128.11   Shr 
+Et2/3               Desg FWD 100       128.12   Shr 
+Et3/0               Desg FWD 100       128.13   Shr 
+Et3/1               Desg FWD 100       128.14   Shr 
+Et3/2               Desg FWD 100       128.15   Shr 
+Et3/3               Desg FWD 100       128.16   Shr 
+</code></pre>
+<p>Comme on peut le voir ci-dessus il y marqué sur le SWITCH 2: <code>This bridge is the root</code>.</p>
+<p>🌞 Schéma représentant les informations STP</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th align="center">SW2-1</th>
+<th align="center">SW2-2</th>
+<th align="center">SW2-3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rôle</td>
+<td align="center"><code>Root Bridge</code></td>
+<td align="center">Switch</td>
+<td align="center">Switch</td>
+</tr>
+<tr>
+<td>Root Port</td>
+<td align="center">X</td>
+<td align="center"><code>e0/1</code></td>
+<td align="center"><code>e0/1</code></td>
+</tr>
+<tr>
+<td>Port désactivé</td>
+<td align="center">X</td>
+<td align="center">X</td>
+<td align="center"><code>e0/2</code></td>
+</tr>
+</tbody>
+</table><ul>
 <li>🌞 confirmer les informations STP
 <ul>
 <li>effectuer un <code>ping</code> d’une machine à une autre</li>
@@ -276,7 +451,7 @@ Si on considère les trois liens qui unissent les switches :</p>
 <h1 id="iii.-isolation"><a href="#iii-isolation"></a>III. Isolation</h1>
 <p>Ici on va s’intéresser à l’utilisation de <a href="#vlan-virtual-local-area-network">VLANs</a>.</p>
 <h2 id="simple"><a href="#1-simple"></a>1. Simple</h2>
-<h4 id="topologie-1"><a href="#topologie-2"></a>Topologie</h4>
+<h4 id="topologie-2"><a href="#topologie-2"></a>Topologie</h4>
 <pre><code>+-----+        +-------+        +-----+
 | PC1 +--------+  SW1  +--------+ PC3 |
 +-----+      10+-------+20      +-----+
@@ -314,7 +489,7 @@ Si on considère les trois liens qui unissent les switches :</p>
 </li>
 </ul>
 <h2 id="avec-trunk"><a href="#2-avec-trunk"></a>2. Avec trunk</h2>
-<h4 id="topologie-2"><a href="#topologie-3"></a>Topologie</h4>
+<h4 id="topologie-3"><a href="#topologie-3"></a>Topologie</h4>
 <pre><code>+-----+        +-------+        +-------+        +-----+
 | PC1 +--------+  SW1  +--------+  SW2  +--------+ PC4 |
 +-----+      10+-------+        +-------+20      +-----+
@@ -358,7 +533,7 @@ Si on considère les trois liens qui unissent les switches :</p>
 </ul>
 <h1 id="iv.-need-perfs"><a href="#iv-need-perfs"></a>IV. Need perfs</h1>
 <p>Mise en place d’un agrégat de port afin de bénéficier d’une meilleure performance ainsi que d’une meilleure sécurité.</p>
-<h4 id="topologie-3"><a href="#topologie-4"></a>Topologie</h4>
+<h4 id="topologie-4"><a href="#topologie-4"></a>Topologie</h4>
 <p>Pareil qu’en <a href="#2-avec-trunk">III.2.</a> à part le lien entre SW1 et SW2 qui est doublé.</p>
 <pre><code>+-----+        +-------+--------+-------+        +-----+
 | PC1 +--------+  SW1  |        |  SW2  +--------+ PC4 |
