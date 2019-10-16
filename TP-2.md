@@ -395,60 +395,58 @@ Et3/3               Desg FWD 100       128.16   Shr
 <td align="center"><code>e0/2</code></td>
 </tr>
 </tbody>
-</table><ul>
-<li>🌞 confirmer les informations STP
-<ul>
-<li>effectuer un <code>ping</code> d’une machine à une autre</li>
-<li>vérifier que les trames passent bien par le chemin attendu (Wireshark)</li>
-</ul>
-</li>
-<li>🌞 ainsi, déterminer quel lien a été désactivé par STP</li>
-<li>🌞 faire un schéma qui explique le trajet d’une requête ARP lorsque PC1 ping PC3, et de sa réponse
-<ul>
-<li>représenter <strong>TOUTES</strong> les trames ARP (n’oubliez pas les broadcasts)</li>
-</ul>
-</li>
-</ul>
-<h4 id="reconfigurer-stp"><a href="#reconfigurer-stp"></a>Reconfigurer STP</h4>
+</table><p><img src="https://github.com/FlorianLeveil/RESEAU_B2/blob/master/Images/topo2.png" alt=""><br>
+🌞 confirmer les informations STP</p>
+<pre><code>[idk@localhost ~]$ cat ./COURS/RESEAU/TP2/idk1.txt 
+No.     Time           Source                Destination           Protocol Length Info
+      1 0.000000       aa:bb:cc:00:02:30     CDP/VTP/DTP/PAgP/UDLD DTP      90     Dynamic Trunk Protocol
+      2 0.058880       aa:bb:cc:00:04:20     CDP/VTP/DTP/PAgP/UDLD DTP      90     Dynamic Trunk Protocol
+      3 0.060001       aa:bb:cc:00:04:10     CDP/VTP/DTP/PAgP/UDLD DTP      90     Dynamic Trunk Protocol
+      4 0.089766       aa:bb:cc:00:03:00     CDP/VTP/DTP/PAgP/UDLD DTP      60     Dynamic Trunk Protocol
+      5 0.089811       aa:bb:cc:00:03:00     CDP/VTP/DTP/PAgP/UDLD DTP      90     Dynamic Trunk Protocol
+      6 1.364844       aa:bb:cc:00:03:00     Spanning-tree-(for-bridges)_00 STP      60     RST. TC + Root = 32768/1/aa:bb:cc:00:02:00  Cost = 100  Port = 0x8001
+      7 3.375980       aa:bb:cc:00:03:00     Spanning-tree-(for-bridges)_00 STP      60     RST. TC + Root = 32768/1/aa:bb:cc:00:02:00  Cost = 100  Port = 0x8001
+      8 5.380596       aa:bb:cc:00:03:00     Spanning-tree-(for-bridges)_00 STP      60     RST. Root = 32768/1/aa:bb:cc:00:02:00  Cost = 100  Port = 0x8001
+      9 7.389070       aa:bb:cc:00:03:00     Spanning-tree-(for-bridges)_00 STP      60     RST. Root = 32768/1/aa:bb:cc:00:02:00  Cost = 100  Port = 0x8001
+     10 9.397085       aa:bb:cc:00:03:00     Spanning-tree-(for-bridges)_00 STP      60     RST. Root = 32768/1/aa:bb:cc:00:02:00  Cost = 100  Port = 0x8001
+     11 10.786508      Private_66:68:04      Broadcast             ARP      64     Who has 10.2.2.2? Tell 10.2.2.3
+     12 10.791429      Private_66:68:03      Private_66:68:04      ARP      64     10.2.2.2 is at 00:50:79:66:68:03
+     13 10.791721      Private_66:68:03      Private_66:68:04      ARP      64     10.2.2.2 is at 00:50:79:66:68:03
+     14 10.793627      Private_66:68:03      Private_66:68:04      ARP      64     10.2.2.2 is at 00:50:79:66:68:03
+     15 10.793816      Private_66:68:03      Private_66:68:04      ARP      64     10.2.2.2 is at 00:50:79:66:68:03
+     16 10.794915      10.2.2.3              10.2.2.2              ICMP     98     Echo (ping) request  id=0xc93a, seq=1/256, ttl=64 (reply in 17)
+     17 10.795202      10.2.2.2              10.2.2.3              ICMP     98     Echo (ping) reply    id=0xc93a, seq=1/256, ttl=64 (request in 16)
+     18 11.402724      aa:bb:cc:00:03:00     Spanning-tree-(for-bridges)_00 STP      60     RST. Root = 32768/1/aa:bb:cc:00:02:00  Cost = 100  Port = 0x8001
+     19 11.796147      10.2.2.3              10.2.2.2              ICMP     98     Echo (ping) request  id=0xca3a, seq=2/512, ttl=64 (reply in 20)
+     20 11.796695      10.2.2.2              10.2.2.3              ICMP     98     Echo (ping) reply    id=0xca3a, seq=2/512, ttl=64 (request in 19)
+     21 12.797275      10.2.2.3              10.2.2.2              ICMP     98     Echo (ping) request  id=0xcb3a, seq=3/768, ttl=64 (reply in 22)
+     22 12.797754      10.2.2.2              10.2.2.3              ICMP     98     Echo (ping) reply    id=0xcb3a, seq=3/768, ttl=64 (request in 21)
+     23 13.409361      aa:bb:cc:00:03:00     Spanning-tree-(for-bridges)_00 STP      60     RST. Root = 32768/1/aa:bb:cc:00:02:00  Cost = 100  Port = 0x8001
+     24 15.413998      aa:bb:cc:00:03:00     Spanning-tree-(for-bridges)_00 STP      60     RST. Root = 32768/1/aa:bb:cc:00:02:00  Cost = 100  Port = 0x8001
+     25 17.422080      aa:bb:cc:00:03:00     Spanning-tree-(for-bridges)_00 STP      60     RST. Root = 32768/1/aa:bb:cc:00:02:00  Cost = 100  Port = 0x8001
+     26 19.434168      aa:bb:cc:00:03:00     Spanning-tree-(for-bridges)_00 STP      60     RST. Root = 32768/1/aa:bb:cc:00:02:00  Cost = 100  Port = 0x8001
+     27 21.434755      aa:bb:cc:00:03:00     Spanning-tree-(for-bridges)_00 STP      60     RST. Root = 32768/1/aa:bb:cc:00:02:00  Cost = 100  Port = 0x8001
+     28 23.446644      aa:bb:cc:00:03:00     Spanning-tree-(for-bridges)_00 STP      60     RST. Root = 32768/1/aa:bb:cc:00:02:00  Cost = 100  Port = 0x8001
+     29 25.455226      aa:bb:cc:00:03:00     Spanning-tree-(for-bridges)_00 STP      60     RST. Root = 32768/1/aa:bb:cc:00:02:00  Cost = 100  Port = 0x8001
+
+</code></pre>
+<ol>
+<li>PC3 envoi un message ARP who as 10.2.2.2 (PC2)</li>
+<li>PC2 et PC1 reçoivent le message who as 10.2.2.2.</li>
+<li>PC1 fait rien, il est pas concerné.</li>
+<li>PC2 répond, en passant par un chemin défini grace au STP.</li>
+<li>Le message ne passera pas par le port eth0/2 du switch1 car l’envoi à été bloqué par le STP.  <code>Et0/2 Altn BLK 100 128.3 Shr</code></li>
+</ol>
+<h4 id="reconfigurer-stp">Reconfigurer STP</h4>
 <ul>
 <li>🌞 changer la priorité d’un switch qui n’est pas le <a href="/it4lik/b2-reseau-2019/blob/master/cours/1.md#overview-of-stp-behaviour"><em>root bridge</em></a></li>
 <li>🌞 vérifier les changements
 <ul>
 <li>avec des commandes sur les switches</li>
-<li>🐙 capturer les échanges qui suivent une reconfiguration STP avec Wireshark</li>
 </ul>
 </li>
 </ul>
-<h4 id="🐙-stp--perfs"><a href="#-stp-perfs"></a>🐙 STP &amp; Perfs</h4>
-<p>Si vous avez lancé Wireshark sur un lien entre un PC et un Switch, vous avez vu qu’il y a toujours des trames STP qui circulent…</p>
-<ul>
-<li>un peu con non ? C’est un PC, il enverra jamais de trames STP</li>
-<li>aussi avec STP, quand on branche un PC, le lien mettra plusieurs secondes avant de passer en <em>forwarding</em> et ainsi transmettre de la donnée</li>
-<li>l’idéal ça serait de désactiver l’envoi de trames STP sur l’interface du switch (ça évite de cramer de la bande passante et du calcul CPU pour rien, générer du trafic inutile, etc.)</li>
-<li>sauuuuf que si un p’tit malin branche des switches là-dessus, il pourrait tout péter en créant une boucle</li>
-<li>deux fonctionnalités à mettre en place :
-<ul>
-<li><code>portfast</code> : marque un port comme <em>“edge”</em> dans la topologie STP. Un port <em>edge</em> est considéré comme une extrémité de la topologie (= un client branché dessus, port <em>access</em>). <em>Port<strong>fast</strong></em> parce que ça va permettre au port de s’allumer plus rapidement (sans passer par les états <em>listening</em> et <em>learning</em> pendant 15 secondes chacun par défaut) et d’être disponible instantanément
-<ul>
-<li>on peut voir l’état d’un port (forward, listening, learning, blocking avec <code>show spanning-tree vlan 1</code>)</li>
-</ul>
-</li>
-<li><code>bpduguard</code> : permet de shutdown le port s’il reçoit des <em>BPDU</em> (pour rappel : un <em>BPDU</em> c’est un message STP)</li>
-</ul>
-</li>
-</ul>
-<p>Idem pour les trames CDP !</p>
-<p>🐙 ToDo :</p>
-<ul>
-<li><a href="/it4lik/b2-reseau-2019/blob/master/memo/cli-cisco.md#stp">activer ces fonctionnalités (<em>portfast</em> et <em>bpduguard</em>) et activer le filtre BPDU</a> sur les interfaces où c’est nécessaire (marqué comme <em>edge</em> dans la topologie STP)</li>
-<li>aussi <a href="/it4lik/b2-reseau-2019/blob/master/memo/cli-cisco.md#cdp">désactiver l’envoi de trames CDP</a> sur ces ports
-<ul>
-<li>prouver avec Wireshark que le switch n’envoie plus de BPDU ni de trames CDP</li>
-<li>faites une capture <strong>avant</strong> et une capture <strong>après</strong> les manips pour le prouver :)</li>
-</ul>
-</li>
-</ul>
-<h1 id="iii.-isolation"><a href="#iii-isolation"></a>III. Isolation</h1>
+<h1 id="iii.-isolation">III. Isolation</h1>
 <p>Ici on va s’intéresser à l’utilisation de <a href="#vlan-virtual-local-area-network">VLANs</a>.</p>
 <h2 id="simple"><a href="#1-simple"></a>1. Simple</h2>
 <h4 id="topologie-2"><a href="#topologie-2"></a>Topologie</h4>
