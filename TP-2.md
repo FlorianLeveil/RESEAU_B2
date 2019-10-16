@@ -527,20 +527,45 @@ host (10.2.3.3) not reachable
 </code></pre>
 <p><img src="https://github.com/FlorianLeveil/RESEAU_B2/blob/master/Images/topo4.png" alt=""></p>
 <h4 id="todo-2">ToDo</h4>
+<p>🌞 Mise en place la topologie ci-dessus :</p>
 <ul>
-<li>🌞 mettre en place la topologie ci-dessus (en utilisant des <a href="#vlan-virtual-local-area-network">VLAN</a>, vous aurez besoin de <a href="/it4lik/b2-reseau-2019/blob/master/cours/1.md#cisco-ports-access-et-trunk">la notion de <em>trunk</em></a>)</li>
-<li>🌞 faire communiquer les PCs deux à deux
+<li>1 -On fait comme avant a part pour la jonction entre les deux switchs</li>
+<li>2 - Pour la jonction entre les deux switch on passe les interface utilisé pour leurs communication en mode trunk <code>switchport mode trunk</code> .</li>
+<li>3 - On défini l’encapsulation <code>switchport trunk encapsulation dot1q</code></li>
+<li>4 - Et enfin on autorise les deux Vlan sur les ports des deux switchs <code>switchport trunk allowed vlan 10,20</code> !</li>
+</ul>
+<p>🌞 Faire communiquer les PCs deux à deux</p>
 <ul>
-<li>vérifier que <code>PC1</code> ne peut joindre que <code>PC3</code></li>
+<li>vérifier que <code>PC1</code> ne peut joindre que <code>PC3</code><br>
+(Moi pour le coup c’est pc3 / pc4 / pc5 / pc6, j’ai juste zappé de les renommer)</li>
+</ul>
+<pre><code>PC3&gt; ping 10.2.10.3
+84 bytes from 10.2.10.3 icmp_seq=2 ttl=64 time=0.385 ms
+84 bytes from 10.2.10.3 icmp_seq=3 ttl=64 time=0.417 ms
+</code></pre>
+<pre><code>PC3&gt; ping 10.2.20.2
+No gateway found
+</code></pre>
+<pre><code>PC3&gt; ping 10.2.20.4
+No gateway found
+</code></pre>
+<ul>
 <li>vérifier que <code>PC4</code> ne peut joindre que <code>PC2</code></li>
 </ul>
-</li>
-<li>🌞 mettre en évidence l’utilisation des VLANs avec Wireshark</li>
-</ul>
+<pre><code>PC6&gt; ping 10.2.10.2
+84 bytes from 10.2.10.2 icmp_seq=3 ttl=64 time=0.398 ms
+84 bytes from 10.2.10.2 icmp_seq=5 ttl=64 time=0.436 ms
+</code></pre>
+<pre><code>PC6&gt; ping 10.2.20.1
+No gateway found
+</code></pre>
+<pre><code>PC6&gt; ping 10.2.20.3
+No gateway found
+</code></pre>
 <h1 id="iv.-need-perfs">IV. Need perfs</h1>
 <p>Mise en place d’un agrégat de port afin de bénéficier d’une meilleure performance ainsi que d’une meilleure sécurité.</p>
-<h4 id="topologie-4"><a href="#topologie-4"></a>Topologie</h4>
-<p>Pareil qu’en <a href="#2-avec-trunk">III.2.</a> à part le lien entre SW1 et SW2 qui est doublé.</p>
+<h4 id="topologie-4">Topologie</h4>
+<p>Pareil qu’en [III.2.] à part le lien entre SW1 et SW2 qui est doublé.</p>
 <pre><code>+-----+        +-------+--------+-------+        +-----+
 | PC1 +--------+  SW1  |        |  SW2  +--------+ PC4 |
 +-----+      10+-------+--------+-------+20      +-----+
@@ -551,29 +576,7 @@ host (10.2.3.3) not reachable
                 +-----+          +-----+
 
 </code></pre>
-<h4 id="plan-dadressage"><a href="#plan-dadressage-4"></a>Plan d’adressage</h4>
-<p>Pareil qu’en <a href="#2-avec-trunk">III.2.</a>.</p>
-<p>Machine</p>
-<p>IP <code>net1</code></p>
-<p>IP <code>net2</code></p>
-<p>VLAN</p>
-<p><code>PC1</code></p>
-<p><code>10.2.10.1/24</code></p>
-<p>X</p>
-<p>10</p>
-<p><code>PC2</code></p>
-<p>X</p>
-<p><code>10.2.20.1/24</code></p>
-<p>20</p>
-<p><code>PC3</code></p>
-<p><code>10.2.10.2/24</code></p>
-<p>X</p>
-<p>10</p>
-<p><code>PC4</code></p>
-<p>X</p>
-<p><code>10.2.20.2/24</code></p>
-<p>20</p>
-<h4 id="todo-3"><a href="#todo-4"></a>ToDo</h4>
+<h4 id="todo-3">ToDo</h4>
 <ul>
 <li>🌞 mettre en place la topologie ci-dessus
 <ul>
@@ -583,7 +586,4 @@ host (10.2.3.3) not reachable
 </ul>
 </li>
 </ul>
-<blockquote>
-<p>Pas de failover possible sur les IOUs malheureusement :( (voir <a href="https://www.cisco.com/c/en/us/td/docs/switches/blades/3020/software/release/12-2_58_se/configuration/guide/3020_scg/swethchl.pdf">ce doc</a>, dernière section. Pas de <code>link state</code> dans les IOUs)</p>
-</blockquote>
 
