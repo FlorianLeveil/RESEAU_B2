@@ -439,13 +439,37 @@ No.     Time           Source                Destination           Protocol Leng
 </ol>
 <h4 id="reconfigurer-stp">Reconfigurer STP</h4>
 <ul>
-<li>🌞 changer la priorité d’un switch qui n’est pas le <a href="/it4lik/b2-reseau-2019/blob/master/cours/1.md#overview-of-stp-behaviour"><em>root bridge</em></a></li>
-<li>🌞 vérifier les changements
+<li>🌞 changer la priorité d’un switch:</li>
+</ul>
+<pre><code>IOU-2#show spanning-tree br
+
+                                                   Hello  Max  Fwd
+Vlan                         Bridge ID              Time  Age  Dly  Protocol
+---------------- --------------------------------- -----  ---  ---  --------
+VLAN0001         32769 (32768,   1) aabb.cc00.0200    2    20   15  rstp        
+IOU-2#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+IOU-2(config)#spanning-tree vlan 1 priority 16384
+IOU-2(config)#exit
+IOU-2#sho
+*Oct 16 16:26:29.334: %SYS-5-CONFIG_I: Configured from console by console
+IOU-2#show spanning-tree br
+
+                                                   Hello  Max  Fwd
+Vlan                         Bridge ID              Time  Age  Dly  Protocol
+---------------- --------------------------------- -----  ---  ---  --------
+VLAN0001         16385 (16384,   1) aabb.cc00.0200    2    20   15  rstp  
+</code></pre>
 <ul>
-<li>avec des commandes sur les switches</li>
+<li>🌞 vérifier les changements</li>
 </ul>
-</li>
-</ul>
+<pre><code>IOU-2#show spanning-tree br
+
+                                                  Hello  Max  Fwd
+Vlan                         Bridge ID              Time  Age  Dly  Protocol
+---------------- --------------------------------- -----  ---  ---  --------
+VLAN0001         16385 (16384,   1) aabb.cc00.0200    2    20   15  rstp 
+</code></pre>
 <h1 id="iii.-isolation">III. Isolation</h1>
 <p>Ici on va s’intéresser à l’utilisation de <a href="#vlan-virtual-local-area-network">VLANs</a>.</p>
 <h2 id="simple"><a href="#1-simple"></a>1. Simple</h2>
