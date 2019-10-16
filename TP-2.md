@@ -563,9 +563,7 @@ No gateway found
 No gateway found
 </code></pre>
 <h1 id="iv.-need-perfs">IV. Need perfs</h1>
-<p>Mise en place d’un agrégat de port afin de bénéficier d’une meilleure performance ainsi que d’une meilleure sécurité.</p>
 <h4 id="topologie-4">Topologie</h4>
-<p>Pareil qu’en [III.2.] à part le lien entre SW1 et SW2 qui est doublé.</p>
 <pre><code>+-----+        +-------+--------+-------+        +-----+
 | PC1 +--------+  SW1  |        |  SW2  +--------+ PC4 |
 +-----+      10+-------+--------+-------+20      +-----+
@@ -577,13 +575,17 @@ No gateway found
 
 </code></pre>
 <h4 id="todo-3">ToDo</h4>
-<ul>
-<li>🌞 mettre en place la topologie ci-dessus
-<ul>
-<li>configurer LACP entre <code>SW1</code> et <code>SW2</code></li>
-<li>utiliser Wireshark pour mettre en évidence l’utilisation de trames <a href="/it4lik/b2-reseau-2019/blob/master/memo/lexique.md#lacp-link-aggregation-control-protocol">LACP</a></li>
-<li><strong>vérifier avec un <code>show ip interface po1</code> que la bande passante a bien été doublée</strong></li>
-</ul>
-</li>
-</ul>
+<h2 id="easy-3-commandes-mais-jai-pas-fais-le-wireshark">EASY: 3 COMMANDES <em>mais j’ai pas fais le wireshark</em></h2>
+<ol>
+<li><code>interface range fastEthernet 0/1 - 1</code></li>
+<li><code>channel-group 1 mode active</code></li>
+<li><code>interface port-channel 1</code></li>
+</ol>
+<p>alé salu !</p>
+<p>Je vais expliquer un peu quand même :</p>
+<ol>
+<li>On sélectionne la plage d’interface</li>
+<li>On active le port channel (en mode active)</li>
+<li>On Configure l’interface port-channel</li>
+</ol>
 
