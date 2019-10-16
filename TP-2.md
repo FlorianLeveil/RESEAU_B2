@@ -471,9 +471,8 @@ Vlan                         Bridge ID              Time  Age  Dly  Protocol
 VLAN0001         16385 (16384,   1) aabb.cc00.0200    2    20   15  rstp 
 </code></pre>
 <h1 id="iii.-isolation">III. Isolation</h1>
-<p>Ici on va s’intéresser à l’utilisation de <a href="#vlan-virtual-local-area-network">VLANs</a>.</p>
-<h2 id="simple"><a href="#1-simple"></a>1. Simple</h2>
-<h4 id="topologie-2"><a href="#topologie-2"></a>Topologie</h4>
+<h2 id="simple">1. Simple</h2>
+<h4 id="topologie-2">Topologie</h4>
 <pre><code>+-----+        +-------+        +-----+
 | PC1 +--------+  SW1  +--------+ PC3 |
 +-----+      10+-------+20      +-----+
@@ -483,35 +482,40 @@ VLAN0001         16385 (16384,   1) aabb.cc00.0200    2    20   15  rstp
                 | PC2 |
                 +-----+
 </code></pre>
-<h4 id="plan-dadressage"><a href="#plan-dadressage-2"></a>Plan d’adressage</h4>
-<p>Machine</p>
-<p>IP <code>net1</code></p>
-<p>VLAN</p>
-<p><code>PC1</code></p>
-<p><code>10.2.3.1/24</code></p>
-<p>10</p>
-<p><code>PC2</code></p>
-<p><code>10.2.3.2/24</code></p>
-<p>20</p>
-<p><code>PC3</code></p>
-<p><code>10.2.3.3/24</code></p>
-<p>20</p>
+<p><img src="https://github.com/FlorianLeveil/RESEAU_B2/blob/master/Images/topo3.png" alt=""></p>
 <h4 id="todo-1"><a href="#todo-2"></a>ToDo</h4>
+<p>🌞 Mise en place la topologie ci-dessus avec des VLANs</p>
 <ul>
-<li>🌞 mettre en place la topologie ci-dessus avec des <a href="#vlan-virtual-local-area-network">VLANs</a>
+<li>1 - On créer un Vlan avec la commande <code>vlan</code> suivie du numéro du vlan.</li>
+<li>2 - Une fois le Vlan créée, on lui donne un nom <code>name client-network</code></li>
+<li>3 - On passe l’interface en mode access puis on lui asigne le vlan 10</li>
+</ul>
+<pre><code>switchport mode access
+witchport access vlan 10 
+</code></pre>
 <ul>
-<li>voir <a href="/it4lik/b2-reseau-2019/blob/master/memo/cli-cisco.md#vlan">les commandes dédiées à la manipulation de VLANs</a></li>
+<li>🌞 faire communiquer les PCs deux à deux</li>
 </ul>
-</li>
-<li>🌞 faire communiquer les PCs deux à deux
-<ul>
-<li>vérifier que <code>PC2</code> ne peut joindre que <code>PC3</code></li>
-<li>vérifier que <code>PC1</code> ne peut joindre personne alors qu’il est dans le même réseau (<strong>sad</strong>)</li>
-</ul>
-</li>
-</ul>
-<h2 id="avec-trunk"><a href="#2-avec-trunk"></a>2. Avec trunk</h2>
-<h4 id="topologie-3"><a href="#topologie-3"></a>Topologie</h4>
+<p>PC 2 vers PC3:</p>
+<pre><code>PC--2&gt; ping 10.2.3.3
+84 bytes from 10.2.3.3 icmp_seq=1 ttl=64 time=0.559 ms
+84 bytes from 10.2.3.3 icmp_seq=2 ttl=64 time=0.247 ms
+</code></pre>
+<p>PC3 vers PC2:</p>
+<pre><code>PC--3&gt; ping 10.2.3.2
+84 bytes from 10.2.3.2 icmp_seq=1 ttl=64 time=0.346 ms
+84 bytes from 10.2.3.2 icmp_seq=2 ttl=64 time=0.183 ms
+</code></pre>
+<p>PC1 vers PC2:</p>
+<pre><code>PC--1 &gt; ping 10.2.3.2
+host (10.2.3.2) not reachable
+</code></pre>
+<p>PC1 vers PC3</p>
+<pre><code>PC--1&gt; ping 10.2.3.3
+host (10.2.3.3) not reachable
+</code></pre>
+<h2 id="avec-trunk">2. Avec trunk</h2>
+<h4 id="topologie-3">Topologie</h4>
 <pre><code>+-----+        +-------+        +-------+        +-----+
 | PC1 +--------+  SW1  +--------+  SW2  +--------+ PC4 |
 +-----+      10+-------+        +-------+20      +-----+
@@ -521,28 +525,8 @@ VLAN0001         16385 (16384,   1) aabb.cc00.0200    2    20   15  rstp
                 | PC2 |          | PC3 |
                 +-----+          +-----+
 </code></pre>
-<h4 id="plan-dadressage-1"><a href="#plan-dadressage-3"></a>Plan d’adressage</h4>
-<p>Machine</p>
-<p>IP <code>net1</code></p>
-<p>IP <code>net2</code></p>
-<p>VLAN</p>
-<p><code>PC1</code></p>
-<p><code>10.2.10.1/24</code></p>
-<p>X</p>
-<p>10</p>
-<p><code>PC2</code></p>
-<p>X</p>
-<p><code>10.2.20.1/24</code></p>
-<p>20</p>
-<p><code>PC3</code></p>
-<p><code>10.2.10.2/24</code></p>
-<p>X</p>
-<p>10</p>
-<p><code>PC4</code></p>
-<p>X</p>
-<p><code>10.2.20.2/24</code></p>
-<p>20</p>
-<h4 id="todo-2"><a href="#todo-3"></a>ToDo</h4>
+<p><img src="https://github.com/FlorianLeveil/RESEAU_B2/blob/master/Images/topo4.png" alt=""></p>
+<h4 id="todo-2">ToDo</h4>
 <ul>
 <li>🌞 mettre en place la topologie ci-dessus (en utilisant des <a href="#vlan-virtual-local-area-network">VLAN</a>, vous aurez besoin de <a href="/it4lik/b2-reseau-2019/blob/master/cours/1.md#cisco-ports-access-et-trunk">la notion de <em>trunk</em></a>)</li>
 <li>🌞 faire communiquer les PCs deux à deux
@@ -553,7 +537,7 @@ VLAN0001         16385 (16384,   1) aabb.cc00.0200    2    20   15  rstp
 </li>
 <li>🌞 mettre en évidence l’utilisation des VLANs avec Wireshark</li>
 </ul>
-<h1 id="iv.-need-perfs"><a href="#iv-need-perfs"></a>IV. Need perfs</h1>
+<h1 id="iv.-need-perfs">IV. Need perfs</h1>
 <p>Mise en place d’un agrégat de port afin de bénéficier d’une meilleure performance ainsi que d’une meilleure sécurité.</p>
 <h4 id="topologie-4"><a href="#topologie-4"></a>Topologie</h4>
 <p>Pareil qu’en <a href="#2-avec-trunk">III.2.</a> à part le lien entre SW1 et SW2 qui est doublé.</p>
@@ -567,7 +551,7 @@ VLAN0001         16385 (16384,   1) aabb.cc00.0200    2    20   15  rstp
                 +-----+          +-----+
 
 </code></pre>
-<h4 id="plan-dadressage-2"><a href="#plan-dadressage-4"></a>Plan d’adressage</h4>
+<h4 id="plan-dadressage"><a href="#plan-dadressage-4"></a>Plan d’adressage</h4>
 <p>Pareil qu’en <a href="#2-avec-trunk">III.2.</a>.</p>
 <p>Machine</p>
 <p>IP <code>net1</code></p>
