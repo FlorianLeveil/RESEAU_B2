@@ -856,4 +856,6 @@ PC-4&gt; ping 10.3.30.254
 <td><code>10.1.54.254/24</code></td>
 </tr>
 </tbody>
-</table>
+</table><h3 id="topo">Topo:</h3>
+<img src="https://github.com/FlorianLeveil/RESEAU_B2/blob/master/Images/tp-res2.png" alt="">
+
