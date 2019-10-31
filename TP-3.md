@@ -1095,7 +1095,7 @@ exit
 interface e4/2
 switchport trunk encapsulation dot1q
 switchport mode trunk
-switchport trunk allowed vlan 10,20,30,41,42,52
+switchport trunk allowed vlan 10,20,30,41,42,52,51,53,54
 exit
 exit
 </code></pre>
@@ -1173,7 +1173,7 @@ exit
 interface e4/3
 switchport trunk encapsulation dot1q
 switchport mode trunk
-switchport trunk allowed vlan 10,20,30,41,42,53
+switchport trunk allowed vlan 10,20,30,41,42,53,51,52,54
 exit
 exit
 </code></pre>
@@ -1227,6 +1227,37 @@ switchport trunk allowed vlan 10,20,30,41,42,43
 exit
 exit
 </code></pre>
+<p><strong>SW5:</strong></p>
+<pre><code>#Config vlan 20 admin
+conf t
+vlan 20
+name admin
+exit
+interface e1/1
+switchport mode access
+switchport acces vlan 20
+exit
+
+#Config vlan 54 imp
+vlan 54
+name imp
+exit
+interface e2/1
+switchport mode access
+switchport acces vlan 54
+exit
+
+#Config interface 3/1 trunk mode vers le switch
+interface e3/1
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan 20,41,42,43,51,52,53,54
+exit
+exit
+</code></pre>
+<p><strong>R1</strong></p>
+<pre><code>
+</code></pre>
 <h3 id="topo">Topo:</h3>
-<img src="https://github.com/FlorianLeveil/RESEAU_B2/blob/master/Images/tp_res2.png" alt="">
+<img src="https://github.com/FlorianLeveil/RESEAU_B2/blob/master/Images/modiftp3.png" alt="">
 
