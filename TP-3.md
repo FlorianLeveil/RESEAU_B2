@@ -856,6 +856,249 @@ PC-4&gt; ping 10.3.30.254
 <td><code>10.1.54.254/24</code></td>
 </tr>
 </tbody>
-</table><h3 id="topo">Topo:</h3>
+</table><h3 id="conf">Conf:</h3>
+<p><strong>U1 à U16:</strong><br>
+Même conf juste le nom et l’ip qui change en fonction du PC.<br>
+Exemple pour U1:</p>
+<pre><code># This the configuration for U1
+#
+# Uncomment the following line to enable DHCP
+# dhcp
+# or the line below to manually setup an IP address and subnet mask
+ip 10.1.10.1 10.1.10.254
+#
+set pcname U1
+</code></pre>
+<p><strong>A1 à A3:</strong><br>
+Même conf juste le nom et l’ip qui change en fonction du PC.<br>
+Exemple pour A1:</p>
+<pre><code># This the configuration for A1
+#
+# Uncomment the following line to enable DHCP
+# dhcp
+# or the line below to manually setup an IP address and subnet mask
+ip 10.1.20.1 10.1.20.254
+#
+set pcname A1
+</code></pre>
+<p><strong>S1 à S8:</strong><br>
+Même conf juste le nom et l’ip qui change en fonction du PC.<br>
+Exemple pour S1:</p>
+<pre><code># This the configuration for S1
+#
+# Uncomment the following line to enable DHCP
+# dhcp
+# or the line below to manually setup an IP address and subnet mask
+ip 10.1.30.1 10.1.30.254
+#
+set pcname S8
+</code></pre>
+<p><strong>SRV2, SRV3 et SRV5:</strong><br>
+Même conf juste le nom et l’ip qui change en fonction du SRV.<br>
+Exemple pour SRV2:</p>
+<pre><code># This the configuration for SRV2
+#
+# Uncomment the following line to enable DHCP
+# dhcp
+# or the line below to manually setup an IP address and subnet mask
+ip 10.1.41.2 10.1.41.254
+#
+set pcname SRV2
+</code></pre>
+<p><strong>SRV1 et SRV6:</strong><br>
+Même conf juste le nom et l’ip qui change en fonction du SRV.<br>
+Exemple pour SRV1:</p>
+<pre><code># This the configuration for SRV1
+#
+# Uncomment the following line to enable DHCP
+# dhcp
+# or the line below to manually setup an IP address and subnet mask
+ip 10.1.42.1 10.1.42.254
+#
+set pcname SRV1
+</code></pre>
+<p><strong>SRV4:</strong></p>
+<pre><code># This the configuration for SRV4
+#
+# Uncomment the following line to enable DHCP
+# dhcp
+# or the line below to manually setup an IP address and subnet mask
+ip 10.1.43.4 10.1.43.254
+#
+set pcname SRV4
+</code></pre>
+<p><strong>P1:</strong></p>
+<pre><code># This the configuration for P1
+#
+# Uncomment the following line to enable DHCP
+# dhcp
+# or the line below to manually setup an IP address and subnet mask
+ip 10.1.51.1 10.1.51.254
+#
+set pcname P1
+</code></pre>
+<p><strong>P2:</strong></p>
+<pre><code># This the configuration for P2
+#
+# Uncomment the following line to enable DHCP
+# dhcp
+# or the line below to manually setup an IP address and subnet mask
+ip 10.1.52.2 10.1.52.254
+#
+set pcname P2
+</code></pre>
+<p><strong>P3 et P4:</strong><br>
+Même conf juste le nom et l’ip qui change en fonction de l’imprimante.<br>
+Exemple pour P3:</p>
+<pre><code># This the configuration for P3
+#
+# Uncomment the following line to enable DHCP
+# dhcp
+# or the line below to manually setup an IP address and subnet mask
+ip 10.1.53.3 10.1.53.254
+#
+set pcname P3
+</code></pre>
+<p><strong>P5:</strong></p>
+<pre><code># This the configuration for P5
+#
+# Uncomment the following line to enable DHCP
+# dhcp
+# or the line below to manually setup an IP address and subnet mask
+ip 10.1.54.5 10.1.54.254
+#
+set pcname P5
+</code></pre>
+<p><strong>SW1:</strong></p>
+<pre><code>#Config vlan 10 utilisateur
+
+conf t
+vlan 10
+name utilisateurs
+exit
+interface e0/1
+switchport mode access
+switchport acces vlan 10
+exit
+interface e0/2
+switchport mode access
+switchport acces vlan 10
+exit
+interface e0/3
+switchport mode access
+switchport acces vlan 10
+exit
+interface e0/4
+switchport mode access
+switchport acces vlan 10
+exit
+interface e1/1
+switchport mode access
+switchport acces vlan 10
+exit
+interface e1/2
+switchport mode access
+switchport acces vlan 10
+exit
+
+
+#Config vlan 30 stage
+vlan 30
+name stage
+exit
+interface e2/1
+switchport mode access
+switchport acces vlan 30
+exit
+interface e2/2
+switchport mode access
+switchport acces vlan 30
+exit
+
+#Config vlan 51 imp
+vlan 51
+name imp
+exit
+interface e4/1
+switchport mode access
+switchport acces vlan 51
+exit
+
+
+#Config interface 3/1 trunk mode vers le switch
+interface e3/1
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan 10,20,30,41,51
+exit
+exit
+</code></pre>
+<p><strong>SW2:</strong></p>
+<pre><code>#Config vlan 10 utilisateur
+conf t
+vlan 10
+name utilisateurs
+exit
+interface e0/1
+switchport mode access
+switchport acces vlan 10
+exit
+interface e0/2
+switchport mode access
+switchport acces vlan 10
+exit
+interface e0/3
+switchport mode access
+switchport acces vlan 10
+exit
+interface e0/4
+switchport mode access
+switchport acces vlan 10
+exit
+
+#Config vlan 20 admin
+vlan 20
+name admin
+exit
+interface e2/1
+switchport mode access
+switchport acces vlan 20
+exit
+
+#Config vlan 30 stage
+vlan 30
+name stage
+exit
+interface e3/1
+switchport mode access
+switchport acces vlan 30
+exit
+interface e3/2
+switchport mode access
+switchport acces vlan 30
+exit
+interface e3/3
+switchport mode access
+switchport acces vlan 30
+exit
+
+#Config vlan 52 imp
+vlan 52
+name imp
+exit
+interface e4/1
+switchport mode access
+switchport acces vlan 52
+exit
+
+#Config interface 4/2 trunk mode vers le switch
+interface e4/2
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan 10,20,30,41,42,52
+exit
+exit
+</code></pre>
+<h3 id="topo">Topo:</h3>
 <img src="https://github.com/FlorianLeveil/RESEAU_B2/blob/master/Images/tp_res2.png" alt="">
 
