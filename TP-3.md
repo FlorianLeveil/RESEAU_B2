@@ -1099,6 +1099,134 @@ switchport trunk allowed vlan 10,20,30,41,42,52
 exit
 exit
 </code></pre>
+<p><strong>SW3:</strong></p>
+<pre><code>#Config vlan 10 utilisateur
+conf t
+vlan 10
+name utilisateurs
+exit
+interface e0/1
+switchport mode access
+switchport acces vlan 10
+exit
+interface e0/2
+switchport mode access
+switchport acces vlan 10
+exit
+interface e0/3
+switchport mode access
+switchport acces vlan 10
+exit
+interface e0/4
+switchport mode access
+switchport acces vlan 10
+exit
+interface e1/1
+switchport mode access
+switchport acces vlan 10
+exit
+interface e1/2
+switchport mode access
+switchport acces vlan 10
+exit
+
+#Config vlan 20 admin
+vlan 20
+name admin
+exit
+interface e2/1
+switchport mode access
+switchport acces vlan 20
+exit
+
+#Config vlan 30 stage
+vlan 30
+name stage
+exit
+interface e3/1
+switchport mode access
+switchport acces vlan 30
+exit
+interface e3/2
+switchport mode access
+switchport acces vlan 30
+exit
+interface e3/3
+switchport mode access
+switchport acces vlan 30
+exit
+
+#Config vlan 53 imp
+vlan 53
+name imp
+exit
+interface e4/1
+switchport mode access
+switchport acces vlan 53
+exit
+interface e4/2
+switchport mode access
+switchport acces vlan 53
+exit
+
+#Config interface 4/3 trunk mode vers le switch
+interface e4/3
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan 10,20,30,41,42,53
+exit
+exit
+</code></pre>
+<p><strong>SW4:</strong></p>
+<pre><code>#Config vlan 41 serveur classique
+conf t
+vlan 41
+name serveurc
+exit
+interface e1/1
+switchport mode access
+switchport acces vlan 41
+exit
+interface e1/2
+switchport mode access
+switchport acces vlan 41
+exit
+interface e1/3
+switchport mode access
+switchport acces vlan 41
+exit
+
+#Config vlan 42 serveur admin
+vlan 42
+name serveura
+exit
+interface e2/1
+switchport mode access
+switchport acces vlan 42
+exit
+interface e2/2
+switchport mode access
+switchport acces vlan 42
+exit
+
+#Config vlan 43 serveur admin spe
+vlan 43
+name serveuras
+exit
+interface e3/1
+switchport mode access
+switchport acces vlan 43
+exit
+
+
+#Config interface 4/1 trunk mode vers le switch
+interface e4/1
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan 10,20,30,41,42,43
+exit
+exit
+</code></pre>
 <h3 id="topo">Topo:</h3>
 <img src="https://github.com/FlorianLeveil/RESEAU_B2/blob/master/Images/tp_res2.png" alt="">
 
