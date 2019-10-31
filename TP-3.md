@@ -1269,6 +1269,5 @@ Un VLAN par imprimante, un VLAN pour serveur classique, un VLAN pour serveur sen
 <li>Autre salles au switchs = Court/Moyen, ça dépend du positionnement des machines dans la salle mais ça ne devrait pas excéder les 5 mètres. (32 Cables)</li>
 </ul>
 <h3 id="bonus">BONUS:</h3>
-<pre class=" language-dif"><code class="prism  language-dif">! ERROR 404: NOT FOUND
-</code></pre>
+<p><code>&lt;p style='color:red'&gt;ERROR 404: NOT FOUND &lt;/p&gt;</code></p>
 
