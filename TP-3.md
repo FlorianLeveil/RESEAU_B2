@@ -1255,9 +1255,19 @@ switchport trunk allowed vlan 20,41,42,43,51,52,53,54
 exit
 exit
 </code></pre>
-<p><strong>R1</strong></p>
-<pre><code>
-</code></pre>
 <h3 id="topo">Topo:</h3>
 <img src="https://github.com/FlorianLeveil/RESEAU_B2/blob/master/Images/modiftp3.png" alt="">
+<h3 id="end">END:</h3>
+<p>Bon, mon infra est peut être overkill, mais au moins elle peut grandir !<br>
+J’ai mis un switch par salle (Il seront dans des baies à coté de la porte d’entrer), qui sont directement relié au routeur (Qui se trouve dans le couloir).<br>
+Le routeur est relié au NAT.<br>
+Un VLAN par imprimante, un VLAN pour serveur classique, un VLAN pour serveur sensible, un VLAN pour le serveur 4 puis un VLAN pour chaque utilisateur. (Admin, Utilisateur, Stagiaire). Tout les réseaux sont en /24 histoire de vraiment pouvoir grandir.</p>
+<p>Niveau longueur des cables on est sur du court / moyen:</p>
+<ul>
+<li>Des switchs au routeur = Cable court (5 Cables)</li>
+<li>Des serveurs au switchs = Cable court (6 Cables)</li>
+<li>Autre salles au switchs = Court/Moyen, ça dépend du positionnement des machines dans la salle mais ça ne devrait pas excéder les 5 mètres. (32 Cables)</li>
+</ul>
+<h3 id="bonus">BONUS:</h3>
+<p>** ERROR 404: NOT FOUND **</p>
 
