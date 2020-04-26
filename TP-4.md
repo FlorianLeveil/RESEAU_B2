@@ -276,7 +276,7 @@ Pour démarer le service dhcp:
 ```
 systemctl start dhcpd.service
 ```
-Pour l'actver à chaque démarage:
+Pour l'activer à chaque démarage:
 ```
 systemctl enable dhcpd.service
 ```
@@ -506,17 +506,17 @@ Première commande:
 ```
 ip dhcp
 ```
-Resultat:
+Résultat:
 ```
 DDORA IP 10.5.20.103/24 GW 10.5.20.254
 ```
 ***
 
-Deuxieme commande:
+Deuxième commande:
 ```
 save
 ```
-resultat:
+résultat:
 ```
 Bah ça save
 ```
@@ -525,7 +525,7 @@ Bah ça save
 
 ### Show ip pour Guest1 / Guest2 / Guest3:
 
-On pourra alors voir notre magnifique DHCP / DNS / DOMAIN NAME / IP et pleins de belles choses encore !
+On pourra alors voir notre magnifique DHCP / DNS / DOMAIN NAME / IP et plein de belles choses encore !
 
 * Guest1:
 
@@ -579,13 +579,13 @@ MTU:        : 1500
 ### Commandes pour Admin1 / Admin2 / Admin3:
 
 ***
-Prèmiere commande:
+Première commande:
 
 ```
 ip <address> <mask> <gateway>
 ip 10.5.10.12 255.255.255.0 10.5.10.254
 ```
-(Changé l'ip pour chaque machine)
+(Changer l'ip pour chaque machine)
 
 Résultat:
 
@@ -594,7 +594,7 @@ Checking for duplicate address...
 PC1 : 10.5.10.12 255.255.255.0 gateway 10.5.10.254
 ```
 ***
-Deuxieme commande:
+Deuxième commande:
 
 ```
 ip dns 10.5.30.11
@@ -612,7 +612,7 @@ Troisième commande:
 ```
 save
 ```
-resultat:
+résultat:
 ```
 Bah ça save
 ```
@@ -836,7 +836,7 @@ yum-config-manager --enable remi-php72
 yum update
 ```
 
-5. On télécharge les paquets qu'Obersium à besoin:
+5. On télécharge les paquets utiles à Obersium:
 
 ```
 yum install wget.x86_64 httpd.x86_64 php.x86_64 php-opcache.x86_64 php-mysql.x86_64 php-gd.x86_64 \
@@ -846,13 +846,13 @@ yum install wget.x86_64 httpd.x86_64 php.x86_64 php-opcache.x86_64 php-mysql.x86
             php-sodium.x86_64
 ```
 
-6. Si on utilise des machines virtuels nous avons besoin de ceci:
+6. Si on utilise des machines virtuelles nous avons besoin de ceci:
 
 ```
 yum install libvirt.x86_64
 ```
 
-7. On créer un dossier Observium dans /opt:
+7. On crée un dossier Observium dans /opt:
 
 ```
 mkdir -p /opt/observium && cd /opt
@@ -883,7 +883,7 @@ systemctl start mariadb
 /usr/bin/mysqladmin -u root password '<mysql root password>'
 ```
 
-12. Créer la base de donné:
+12. Créer la base de données:
 
 ```
 mysql -u root -p
@@ -899,7 +899,7 @@ cd /opt/observium/
 cp config.php.default config.php
 ```
 
-14. Initialisation du shema de la base de donnée:
+14. Initialisation du schéma de la base de données:
 
 ```
 ./discovery.php -u
@@ -913,8 +913,8 @@ which fping
 
 16. Editer le fichier ./config.php
   * Changer le Db name et DB password
-  * Ajouter cette ci pour fping `$config['fping'] = "<votre path fping>";`
-  * Remplacer public dans la ligne `$config['snmp']['community'] = array("public")`, par le nom de vôtre choix.
+  * Ajouter cette ligne pour fping `$config['fping'] = "<votre path fping>";`
+  * Remplacer public dans la ligne `$config['snmp']['community'] = array("public")`, par le nom de votre choix.
 
 le fichier de conf donne ça:
 
@@ -955,13 +955,13 @@ $config['auth_mechanism'] = "mysql";    // default, other options: ldap, http-au
 
 // End config.php
 ```
-17. Faire un setenforce 0 puis modifier le fichier /etc/selinux/config pour eviter de faire un setenfoce 0 à chaque redemarage:
+17. Faire un setenforce 0 puis modifier le fichier /etc/selinux/config pour éviter de faire un setenfoce 0 à chaque redémarrage:
 
 ```
 senteforce 0
 vi /etc/selinux/config
 ```
-* Trouvé la ligne avec `SELINUX=XXXXX` et ramplacer là par `SELINUX=permissive`
+* Trouver la ligne avec `SELINUX=XXXXX` et remplacer la par `SELINUX=permissive`
 
 18. Créer un dossier rdd dans /opt/observium et faire un chown dessus pour apache:
     
@@ -1000,7 +1000,7 @@ cd /opt/observium
 ./adduser.php <username> <password> <level>
 ```
 
-22. Créer un nouveau dans `/etc/cron.d/observium`fichier et copier ceci dedans:
+22. Créer un nouveau fichier dans `/etc/cron.d/observium` et copier ceci dedans:
 
 ```
 # Run a complete discovery of all devices once every 6 hours
@@ -1032,7 +1032,7 @@ firewall-cmd --permanent --zone=public --add-service=http
 firewall-cmd --reload
 ```
 
-24. Demarrer Apache:
+24. Démarrer Apache:
 
 ```
 systemctl enable httpd
@@ -1043,11 +1043,11 @@ systemctl start httpd
 
 <div align="center"><img src="./Images/observiumlogin.png" /></div>
 
-Connecter vous avec votre utilisateur Observium créée au préalable !
+Connectez vous avec votre utilisateur Observium créé au préalable !
 
 *Mais ou sont mes devices il n'y à rien ? :'( - PATIENCE*
 
-Bon c'est bien beau tout ça mais on à pas un device !
+Bon c'est bien beau tout ça mais on n'a pas un device !
 
 ***
 
@@ -1086,7 +1086,7 @@ firewall-cmd --add-port=161/udp --permanent
 firewall-cmd --reload
 ```
 
-On demarre le service snmp:
+On démarre le service snmp:
 
 ```
 systemctl enable snmpd.service
@@ -1095,10 +1095,10 @@ systemctl start snmpd.service
 ***
 
 Maitenant pour mettre notre serveur à jour deux solutions !
-1. On attend 5 minutes. (Et oui grace à notre fichier cron il se met à jour toutes les 5 minutes)
-2. Ou alors nous avons un petit script sur notre serveur que nous permet de faire ça !
+1. On attend 5 minutes. (Et oui grâce à notre fichier cron il se met à jour toutes les 5 minutes)
+2. Ou alors nous avons un petit script sur notre serveur qui nous permet de faire ça !
 
-### Mettre à jour notres serveur.
+### Mettre à jour notre serveur.
 
 Première chose à faire, ajouter tout les devices avec cette commande:
 
@@ -1108,13 +1108,13 @@ Première chose à faire, ajouter tout les devices avec cette commande:
 ```
 *(Commande à faire pour chaque device bien sur)*
 
-Deuxieme chose à faire, lancé les deux script suivant (de se que j'ai compris il ajoute les devices dans la base de donnée): 
+Deuxième chose à faire, lancer les deux scripts suivants (de se que j'ai compris il ajoute les devices dans la base de données): 
 
 ```
 /opt/observium/discovery.php -h all
 /opt/observium/poller.php -h all
 ```
-Troisème et derniere chose à faire:
+Troisème et dernière chose à faire:
 
 ENJOOOOOOOOY !
 
