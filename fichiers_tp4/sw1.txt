@@ -1,0 +1,36 @@
+! client-sw1
+
+conf t
+
+! Declare VLANs
+vlan 10
+name admins
+exit
+vlan 20
+name guests
+exit
+vlan 30
+name infra
+exit
+
+! Trunk to client-sw2
+interface ethernet0/0
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan add 10,20
+exit
+
+! admin1
+interface ethernet1/1
+switchport mode access
+switchport access vlan 10
+exit
+
+! guest1
+interface ethernet1/2
+switchport mode access
+switchport access vlan 20
+exit
+
+exit
+wr

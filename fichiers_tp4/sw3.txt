@@ -1,0 +1,29 @@
+conf t
+vlan 10
+name admins-vlan
+exit
+vlan 20
+name guests-vlan
+exit
+vlan 30
+name infra-vlan
+exit
+interface Ethernet 0/0
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan 10,20,30
+exit
+interface Ethernet 1/0
+switchport mode access
+switchport access vlan 10
+exit
+interface Ethernet 1/1
+switchport mode access
+switchport access vlan 20
+exit
+interface Ethernet 3/3
+switchport mode access
+switchport access vlan 20
+exit
+exit
+wr

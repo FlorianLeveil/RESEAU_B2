@@ -1,0 +1,49 @@
+! R1
+
+conf t
+
+! external interface (GNS3 NAT)
+interface FastEthernet0/0
+ip address dhcp
+ip nat outside
+no shut
+exit
+
+! VLAN 10 sub interface - to client-sw2
+interface FastEthernet1/0.10
+encapsulation dot1Q 10
+ip address 10.5.10.254 255.255.255.0
+ip nat inside
+exit
+
+! VLAN 20 sub interface - to client-sw2
+interface FastEthernet1/0.20
+encapsulation dot1Q 20
+ip address 10.5.20.254 255.255.255.0
+ip nat inside
+exit
+
+! VLAN 30 sub interface - to infra-sw1
+interface FastEthernet1/1.30
+encapsulation dot1Q 30
+ip address 10.5.30.254 255.255.255.0
+ip nat inside
+exit
+
+! bring up interface
+interface FastEthernet1/0
+no shut
+exit
+
+! bring up interface
+interface FastEthernet1/1
+no shut
+exit
+
+! define an open access-list, and associate it with a simple source NAT
+access-list 1 permit any
+ip nat inside source list 1 interface fastEthernet 0/0 overload
+
+exit
+exit
+wr
